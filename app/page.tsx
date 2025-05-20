@@ -1,9 +1,11 @@
+import { Button } from "@/components/ui/button";
+
 export default function Home() {
   return (
     <div>
-      <p className="text-green-800">
-        Howdy!
-      </p>
+      <Button size="lg">
+        Click me
+      </Button>
     </div>
   );
 }
