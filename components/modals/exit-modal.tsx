@@ -58,7 +58,7 @@ export const ExitModal = () => {
                 router.push("/learn");
               }}
             >
-              Keep Learning
+              End Session
             </Button>
           </div>
         </DialogFooter>
