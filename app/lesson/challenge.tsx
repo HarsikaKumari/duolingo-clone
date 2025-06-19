@@ -25,7 +25,7 @@ export const Challenge = ({
         "grid gap-2",
         type === "ASSIST" && "grid-cols-1",
         type === "SELECT" &&
-          "grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax,(0,1fr))]"
+          "grid-cols-1 lg:grid-cols-[repeat(auto-fit,minmax,(0,1fr))]"
       )}
     >
       {options.map((option, i) => (
@@ -36,7 +36,7 @@ export const Challenge = ({
           imageSrc={option.imgageSrc}
           auidoSrc={option.audionSrc}
           shortcut={`${i + 1}`}
-          selected={true || selectedOption === option.id}
+          selected={selectedOption === option.id}
           onClick={() => onSelect(option.id)}
           status={status}
           disabled={disabled}
