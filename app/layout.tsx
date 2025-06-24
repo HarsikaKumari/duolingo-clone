@@ -1,9 +1,12 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import { Geist, Geist_Mono } from "next/font/google";
+
 import { ExitModal } from "@/components/modals/exit-modal";
+import { HeartsModal } from "@/components/modals/hearts-modal";
+import { PracticeModal } from "@/components/modals/practice-modal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +36,8 @@ export default function RootLayout({
         >
           <Toaster />
           <ExitModal />
+          <HeartsModal />
+          <PracticeModal />
           {children}
         </body>
       </html>

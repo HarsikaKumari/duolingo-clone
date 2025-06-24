@@ -1,19 +1,22 @@
 "use client";
 
-import { challenges, challengeOptions } from "@/db/schema";
 import { Header } from "./header";
 import { useState, useTransition } from "react";
 import { QuestionBubble } from "./question-bubble";
 import { Challenge } from "./challenge";
 import { Footer } from "./footer";
-import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { toast } from "sonner";
-import { reduceHearts } from "@/actions/user-progress";
-import { useAudio, useWindowSize } from "react-use";
+import { useAudio, useMount, useWindowSize } from "react-use";
 import Image from "next/image";
 import { ResultCard } from "./result-card";
 import { useRouter } from "next/navigation";
-import Confetti from 'react-confetti';
+import Confetti from "react-confetti";
+
+import { reduceHearts } from "@/actions/user-progress";
+import { challenges, challengeOptions } from "@/db/schema";
+import { upsertChallengeProgress } from "@/actions/challenge-progress";
+import { useHeartsModal } from "@/store/use-hearts-modal";
+import { usePracticeModal } from "@/store/use-pracitce-modal";
 
 type Props = {
   initialPercentage: number;
@@ -34,6 +37,15 @@ export const Quiz = ({
   initialLessonChallenges,
   userSubscription,
 }: Props) => {
+  const { open: openHeartsModal } = useHeartsModal();
+  const { open: openPracticeModal } = usePracticeModal();
+
+  useMount(() => {
+    if (initialPercentage === 100) {
+      openPracticeModal();
+    }
+  });
+
   const { width, height } = useWindowSize();
 
   const router = useRouter();
@@ -48,7 +60,9 @@ export const Quiz = ({
   const [pending, startTransition] = useTransition();
 
   const [hearts, setHearts] = useState(initialHearts);
-  const [percentage, setPercentage] = useState(initialPercentage);
+  const [percentage, setPercentage] = useState(() => {
+    return initialPercentage === 100 ? 0 : initialPercentage;
+  });
   const [challenges] = useState(initialLessonChallenges);
   const [activeIndex, setActiveIndex] = useState(() => {
     const uncompletedIndex = challenges.findIndex(
@@ -100,7 +114,7 @@ export const Quiz = ({
         upsertChallengeProgress(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              console.log("Missing hearts");
+              openHeartsModal();
               return;
             }
 
@@ -120,7 +134,7 @@ export const Quiz = ({
         reduceHearts(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              console.log("missing hearts");
+              openHeartsModal();
               return;
             }
 
@@ -136,7 +150,7 @@ export const Quiz = ({
     }
   };
 
-  if (true || !challenge) {
+  if (!challenge) {
     return (
       <>
         {finishAudio}

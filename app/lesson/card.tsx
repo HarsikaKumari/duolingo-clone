@@ -33,8 +33,8 @@ export const Card = ({
 
   const handleClick = useCallback(() => {
     if (disabled) return;
+    
     controls.play();
-
     onClick();
   }, [disabled, onClick, controls]);
 
