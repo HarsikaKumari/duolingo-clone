@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import Confetti from "react-confetti";
 
 import { reduceHearts } from "@/actions/user-progress";
-import { challenges, challengeOptions } from "@/db/schema";
+import { challenges, challengeOptions, userSubscription } from "@/db/schema";
 import { upsertChallengeProgress } from "@/actions/challenge-progress";
 import { useHeartsModal } from "@/store/use-hearts-modal";
 import { usePracticeModal } from "@/store/use-pracitce-modal";
@@ -26,8 +26,9 @@ type Props = {
     completed: boolean;
     challengeOptions: (typeof challengeOptions.$inferSelect)[];
   })[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  userSubscription: any; // Replace with subscription DB type
+  userSubscription:
+    | (typeof userSubscription.$inferInsert & { isActive: boolean })
+    | null;
 };
 
 export const Quiz = ({
