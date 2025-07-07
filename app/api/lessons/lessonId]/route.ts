@@ -6,8 +6,11 @@ import { lessons } from "@/db/schema";
 import { isAdmin } from "@/lib/admin";
 
 export const GET = async (req: Request,
-    { params }: { params: { lessonId: number } },
+    { params }: {
+        params: Promise<{ lessonId: number }>
+    },
 ) => {
+    const { lessonId } = await params;
     const adminStatus = await isAdmin();
 
     if (!adminStatus) {
@@ -15,15 +18,18 @@ export const GET = async (req: Request,
     }
 
     const data = await db.query.lessons.findFirst({
-        where: eq(lessons.id, params.courseId),
+        where: eq(lessons.id, lessonId),
     });
 
     return NextResponse.json(data);
 };
 
 export const PUT = async (req: Request,
-    { params }: { params: { courseId: number } },
+    { params }: {
+        params: Promise<{ lessonId: number }>
+    },
 ) => {
+    const { lessonId } = await params;
     const adminStatus = await isAdmin();
 
     if (!adminStatus) {
@@ -33,14 +39,17 @@ export const PUT = async (req: Request,
     const body = await req.json();
     const data = await db.update(lessons).set({
         ...body,
-    }).where(eq(lessons.id, params.courseId)).returning();
+    }).where(eq(lessons.id, lessonId)).returning();
 
     return NextResponse.json(data[0]);
 };
 
 export const DELETE = async (req: Request,
-    { params }: { params: { lessonId: number } },
+    { params }: {
+        params: Promise<{ lessonId: number }>
+    },
 ) => {
+    const { lessonId } = await params;
     const adminStatus = await isAdmin();
 
     if (!adminStatus) {
@@ -48,7 +57,7 @@ export const DELETE = async (req: Request,
     }
 
     const data = await db.delete(lessons)
-        .where(eq(lessons.id, params.lessonId)).returning();
+        .where(eq(lessons.id, lessonId)).returning();
 
     return NextResponse.json(data[0]);
 };
