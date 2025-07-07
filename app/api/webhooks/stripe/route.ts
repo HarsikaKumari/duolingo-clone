@@ -12,8 +12,8 @@ export async function POST(req: Request) {
     console.log("Stripe webhook POST route triggered");
 
     const body = await req.text();
-    console.log("Webhook Raw Body:", body);
-    
+    // console.log("Webhook Raw Body:", body);
+
     const signature = (await headers()).get('Stripe-Signature') as string;
 
     let event: Stripe.Event;
@@ -24,6 +24,7 @@ export async function POST(req: Request) {
             signature,
             process.env.STRIPE_WEBHOOK_SECRET!,
         );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         return new NextResponse(`Webhook error: ${error.message}`, {
             status: 400,
@@ -47,8 +48,8 @@ export async function POST(req: Request) {
             stripeCustomerId: subscription.customer as string,
             stripePriceId: subscription.items.data[0].price.id,
             stripeCurrentPeriodEnd: new Date(
-                subscription.current_period_end * 1000,
-                // subscription.items.data[0].current_period_end * 1000,
+                // subscription.current_period_end * 1000,
+                subscription.items.data[0].current_period_end * 1000,
             ),
         });
         console.log("✅ Subscription inserted");
@@ -62,13 +63,11 @@ export async function POST(req: Request) {
         await db.update(userSubscription).set({
             stripePriceId: subscription.items.data[0].price.id,
             stripeCurrentPeriodEnd: new Date(
-                subscription.current_period_end * 1000,
-                // subscription.items.data[0].current_period_end * 1000,
+                // subscription.current_period_end * 1000,
+                subscription.items.data[0].current_period_end * 1000,
             ),
         }).where(eq(userSubscription.stripeSubscriptionId, subscription.id));
         console.log("✅ Subscription updated");
     }
     return new NextResponse(null, { status: 200 })
 }
-// D: \Code\WebDev\Project\duolingo - clone\app\api\webhooks\stripe\route.ts
-// curl - X POST http://localhost:3000/api/webhooks/stripe

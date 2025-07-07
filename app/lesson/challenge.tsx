@@ -33,8 +33,8 @@ export const Challenge = ({
           key={option.id}
           id={option.id}
           text={option.text}
-          imageSrc={option.imgageSrc}
-          auidoSrc={option.audionSrc}
+          imageSrc={option.imageSrc}
+          auidoSrc={option.audioSrc}
           shortcut={`${i + 1}`}
           selected={selectedOption === option.id}
           onClick={() => onSelect(option.id)}

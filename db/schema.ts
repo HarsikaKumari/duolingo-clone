@@ -67,8 +67,8 @@ export const challengeOptions = pgTable("challenge_options", {
     challengeId: integer("challenge_id").references(() => challenges.id, { onDelete: "cascade" }).notNull(),
     text: text("text").notNull(),
     correct: boolean("correct").notNull().default(false),
-    imgageSrc: text("image_src"),
-    audionSrc: text("audio_src"),
+    imageSrc: text("image_src"),
+    audioSrc: text("audio_src"),
 });
 
 export const challengeOptionsRelations = relations(challengeOptions, ({ one }) => ({
