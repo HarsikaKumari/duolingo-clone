@@ -1,4 +1,16 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 🎆 Features of the Project
+
+✨ User authentication and role management  
+✨ Course, unit, and lesson structure  
+✨ Interactive quizzes and challenges  
+✨ XP and hearts system  
+✨ Leaderboard to show top users  
+✨ In-app shop to buy items  
+✨ AI-generated voice for questions  
+✨ Stripe-powered subscription system  
+✨ Admin dashboard to manage content  
+✨ Progress tracking and feedback  
+✨ Mobile-responsive UI with modern design  
 
 ## Getting Started
 
