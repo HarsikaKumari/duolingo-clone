@@ -7,7 +7,7 @@ import { isAdmin } from "@/lib/admin";
 
 export const GET = async (req: Request,
     { params }: {
-        params: Promise<{ courseId: number }>
+        params: Promise<{ courseId: string }>
     },
 ) => {
     const { courseId } = await params;
@@ -18,7 +18,7 @@ export const GET = async (req: Request,
     }
 
     const data = await db.query.courses.findFirst({
-        where: eq(courses.id, courseId),
+        where: eq(courses.id, Number(courseId)),
     });
 
     return NextResponse.json(data);
@@ -26,7 +26,7 @@ export const GET = async (req: Request,
 
 export const PUT = async (req: Request,
     { params }: {
-        params: Promise<{ courseId: number }>
+        params: Promise<{ courseId: string }>
     },
 ) => {
     const { courseId } = await params;
@@ -39,14 +39,14 @@ export const PUT = async (req: Request,
     const body = await req.json();
     const data = await db.update(courses).set({
         ...body,
-    }).where(eq(courses.id, courseId)).returning();
+    }).where(eq(courses.id, Number(courseId))).returning();
 
     return NextResponse.json(data[0]);
 };
 
 export const DELETE = async (req: Request,
     { params }: {
-        params: Promise<{ courseId: number }>
+        params: Promise<{ courseId: string }>
     },
 ) => {
     const { courseId } = await params;
@@ -57,7 +57,7 @@ export const DELETE = async (req: Request,
     }
 
     const data = await db.delete(courses)
-        .where(eq(courses.id, courseId)).returning();
+        .where(eq(courses.id, Number(courseId))).returning();
 
     return NextResponse.json(data[0]);
 };

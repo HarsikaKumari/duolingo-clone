@@ -7,7 +7,7 @@ import { isAdmin } from "@/lib/admin";
 
 export const GET = async (req: Request,
     { params }: {
-        params: Promise<{ challengeId: number }>
+        params: Promise<{ challengeId: string }>
     },
 ) => {
     const { challengeId } = await params;
@@ -18,7 +18,7 @@ export const GET = async (req: Request,
     }
 
     const data = await db.query.challenges.findFirst({
-        where: eq(challenges.id, challengeId),
+        where: eq(challenges.id, Number(challengeId)),
     });
 
     return NextResponse.json(data);
@@ -26,7 +26,7 @@ export const GET = async (req: Request,
 
 export const PUT = async (req: Request,
     { params }: {
-        params: Promise<{ challengeId: number }>
+        params: Promise<{ challengeId: string }>
     },
 ) => {
     const { challengeId } = await params;
@@ -39,14 +39,14 @@ export const PUT = async (req: Request,
     const body = await req.json();
     const data = await db.update(challenges).set({
         ...body,
-    }).where(eq(challenges.id, challengeId)).returning();
+    }).where(eq(challenges.id, Number(challengeId))).returning();
 
     return NextResponse.json(data[0]);
 };
 
 export const DELETE = async (req: Request,
     { params }: {
-        params: Promise<{ challengeId: number }>
+        params: Promise<{ challengeId: string }>
     },
 ) => {
     const { challengeId } = await params;
@@ -57,7 +57,7 @@ export const DELETE = async (req: Request,
     }
 
     const data = await db.delete(challenges)
-        .where(eq(challenges.id, challengeId)).returning();
+        .where(eq(challenges.id, Number(challengeId))).returning();
 
     return NextResponse.json(data[0]);
 };

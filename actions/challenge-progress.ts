@@ -7,7 +7,7 @@ import { auth } from "@clerk/nextjs/server"
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export const upsertChallengeProgress = async (challengeId: number) => {
+export const upsertChallengeProgress = async (challengeId: string) => {
     const { userId } = await auth();
 
     if (!userId) {
@@ -22,7 +22,7 @@ export const upsertChallengeProgress = async (challengeId: number) => {
     }
 
     const challenge = await db.query.challenges.findFirst({
-        where: eq(challenges.id, challengeId)
+        where: eq(challenges.id, Number(challengeId))
     });
 
     if (!challenge) {
@@ -34,7 +34,7 @@ export const upsertChallengeProgress = async (challengeId: number) => {
     const existingChallengeProgress = await db.query.challengeProgress.findFirst({
         where: and(
             eq(challengeProgress.userId, userId),
-            eq(challengeProgress.challengeId, challengeId)
+            eq(challengeProgress.challengeId, Number(challengeId))
         )
     });
 
@@ -69,7 +69,7 @@ export const upsertChallengeProgress = async (challengeId: number) => {
     }
 
     await db.insert(challengeProgress).values({
-        challengeId,
+        challengeId: Number(challengeId),
         userId,
         completed: true,
     });

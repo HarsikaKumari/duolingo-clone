@@ -4,17 +4,17 @@ import { Quiz } from "../quiz";
 
 // type Props = {
 //   params: {
-//     lessonId: number;
+//     lessonId: string;
 //   };
 // };
 
 const LessonIdPage = async ({
   params,
 }: {
-  params: Promise<{ lessonId: number }>;
+  params: Promise<{ lessonId: string }>;
 }) => {
   const { lessonId } = await params;
-  const lessonData = getLesson(lessonId);
+  const lessonData = getLesson(Number(lessonId));
   const userProgressData = getUserProgress();
   const userSubscriptionData = getUserSubscription();
 
